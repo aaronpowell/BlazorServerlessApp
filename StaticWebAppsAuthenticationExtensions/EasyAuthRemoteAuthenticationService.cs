@@ -72,15 +72,14 @@ namespace StaticWebAppsAuthenticationExtensions
             }
             var stateId = Guid.NewGuid().ToString();
             await JSRuntime.InvokeVoidAsync("sessionStorage.setItem", $"Blazor.EasyAuth.{stateId}", JsonSerializer.Serialize(context.State));
-            Navigation.NavigateTo($"/.auth/login/{easyAuthContext.SelectedProvider}?post_login_redirect_uri=authentication/login-callback?state={stateId}", forceLoad: true);
+            Navigation.NavigateTo($"/.auth/login/{easyAuthContext.SelectedProvider}?post_login_redirect_uri=authentication/login-callback/{stateId}", forceLoad: true);
 
             return new RemoteAuthenticationResult<RemoteAuthenticationState> { Status = RemoteAuthenticationStatus.Redirect };
         }
 
         public async Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
         {
-            var callbackUrl = context.Url;
-            var stateId = EasyAuthRemoteAuthenticatorView.GetParameter(new Uri(callbackUrl).Query, "state");
+            var stateId = new Uri(context.Url).PathAndQuery.Split("?")[0].Split("/").Last();
             var serializedState = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", $"Blazor.EasyAuth.{stateId}");
             var state = JsonSerializer.Deserialize<RemoteAuthenticationState>(serializedState);
 

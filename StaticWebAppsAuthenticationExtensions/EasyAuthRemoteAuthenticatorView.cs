@@ -37,7 +37,6 @@ namespace StaticWebAppsAuthenticationExtensions
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            base.BuildRenderTree(builder);
             switch (Action)
             {
                 case RemoteAuthenticationActions.LogInFailed:

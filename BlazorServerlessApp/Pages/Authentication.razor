@@ -1,9 +1,10 @@
 ﻿@page "/authentication/{action}"
+@attribute [Route("/authentication/{action}/{state}")]
 @inject Microsoft.Extensions.Options.IOptions<RemoteAuthenticationOptions<EasyAuthOptions>> Options
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using AzureStaticWebApps.Blazor.Authentication
 @using StaticWebAppsAuthenticationExtensions
- 
+
 <EasyAuthRemoteAuthenticatorView SelectedOption="@_selectedOption" Action="@Action">
     <LoggingIn>
         <div class="container">
@@ -11,7 +12,7 @@
             {
                 <div class="row">
                     <div class="col-sm-12 col-md-9 col-lg-6">
-                        <a class="btn btn-block btn-lg btn-social btn-@provider.Id" @onclick="(args) => SelectOption(provider.Id)" >
+                        <a class="btn btn-block btn-lg btn-social btn-@provider.Id" @onclick="(args) => SelectOption(provider.Id)">
                             <span class="fa fa-@provider.Id"></span> Sign in with @provider.DisplayName
                         </a>
                     </div>
