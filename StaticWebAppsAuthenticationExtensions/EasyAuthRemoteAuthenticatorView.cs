@@ -31,6 +31,7 @@ namespace StaticWebAppsAuthenticationExtensions
                     return;
 
                 default:
+                    await base.OnParametersSetAsync();
                     break;
             }
         }
