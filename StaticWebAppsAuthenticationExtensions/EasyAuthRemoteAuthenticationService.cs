@@ -4,13 +4,16 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.Extensions.Options;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StaticWebAppsAuthenticationExtensions
@@ -19,11 +22,18 @@ namespace StaticWebAppsAuthenticationExtensions
     {
         public RemoteAuthenticationOptions<EasyAuthOptions> Options { get; }
         public HttpClient HttpClient { get; }
+        public NavigationManager Navigation { get; }
+        public IJSRuntime JSRuntime { get; }
 
-        public EasyAuthRemoteAuthenticationService(IOptions<RemoteAuthenticationOptions<EasyAuthOptions>> options, NavigationManager navigationManager)
+        public EasyAuthRemoteAuthenticationService(
+            IOptions<RemoteAuthenticationOptions<EasyAuthOptions>> options,
+            NavigationManager navigationManager,
+            IJSRuntime jsRuntime)
         {
             Options = options.Value;
             HttpClient = new HttpClient() { BaseAddress = new Uri(navigationManager.BaseUri) };
+            Navigation = navigationManager;
+            JSRuntime = jsRuntime;
         }
 
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -54,17 +64,30 @@ namespace StaticWebAppsAuthenticationExtensions
             }
         }
 
-        public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
+        public async Task<RemoteAuthenticationResult<RemoteAuthenticationState>> SignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
         {
-            throw new NotImplementedException();
+            if (!(context is EasyAuthRemoteAuthenticationContext easyAuthContext))
+            {
+                throw new InvalidOperationException("Not an easyauthcontext");
+            }
+            var stateId = Guid.NewGuid().ToString();
+            await JSRuntime.InvokeVoidAsync("sessionStorage.set", $"Blazor.EasyAuth.{stateId}", JsonSerializer.Serialize(context.State));
+            Navigation.NavigateTo($"/.auth/login/{easyAuthContext.SelectedProvider}?post_login_redirect_uri=authentication/login-callback?state={stateId}", forceLoad: true);
+
+            return new RemoteAuthenticationResult<RemoteAuthenticationState> { Status = RemoteAuthenticationStatus.Redirect };
+        }
+
+        public async Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
+        {
+            var callbackUrl = context.Url;
+            var stateId = EasyAuthRemoteAuthenticatorView.GetParameter(new Uri(callbackUrl).Query, "state");
+            var serializedState = await JSRuntime.InvokeAsync<string>("sessionStorage.get", $"Blazor.EasyAuth.{stateId}");
+            var state = JsonSerializer.Deserialize<RemoteAuthenticationState>(serializedState);
+
+            return new RemoteAuthenticationResult<RemoteAuthenticationState> { State = state, Status = RemoteAuthenticationStatus.Success };
         }
 
         public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignOutAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> SignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
         {
             throw new NotImplementedException();
         }
