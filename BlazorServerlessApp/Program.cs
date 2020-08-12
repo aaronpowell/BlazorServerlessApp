@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AzureStaticWebApps.Blazor.Authentication;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace BlazorServerlessApp
 {
@@ -22,6 +23,10 @@ namespace BlazorServerlessApp
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
             builder.Services.AddStaticWebAppsAuthentication();
+            builder.Services.Configure<RemoteAuthenticationOptions<EasyAuthOptions>>(options =>
+            {
+                options.ProviderOptions.AuthenticationDataUrl = "/sample-data/me.json";
+            });
             
             await builder.Build().RunAsync();
         }
