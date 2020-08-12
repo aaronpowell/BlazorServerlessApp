@@ -25,7 +25,7 @@ namespace BlazorServerlessApp
             builder.Services.AddStaticWebAppsAuthentication();
             builder.Services.Configure<RemoteAuthenticationOptions<EasyAuthOptions>>(options =>
             {
-                options.ProviderOptions.AuthenticationDataUrl = "/sample-data/me.json";
+                options.ProviderOptions.AuthenticationDataUrl = "";
             });
             
             await builder.Build().RunAsync();
