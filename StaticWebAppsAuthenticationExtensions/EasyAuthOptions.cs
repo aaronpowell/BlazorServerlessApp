@@ -6,7 +6,7 @@ namespace AzureStaticWebApps.Blazor.Authentication
     public class EasyAuthOptions
     {
         public IList<ExternalProvider> Providers { get; set; } = new List<ExternalProvider>();
-        public string AuthenticationDataUrl { get; set; }
+        public string AuthenticationDataUrl { get; set; } = "";
     }
 
     public class ExternalProvider

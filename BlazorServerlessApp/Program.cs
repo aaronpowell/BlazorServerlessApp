@@ -23,10 +23,6 @@ namespace BlazorServerlessApp
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
             builder.Services.AddStaticWebAppsAuthentication();
-            builder.Services.Configure<RemoteAuthenticationOptions<EasyAuthOptions>>(options =>
-            {
-                options.ProviderOptions.AuthenticationDataUrl = "";
-            });
             
             await builder.Build().RunAsync();
         }
