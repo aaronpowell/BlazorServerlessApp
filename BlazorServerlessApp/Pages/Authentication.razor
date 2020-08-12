@@ -25,6 +25,8 @@
 @code{
     [Parameter] public string Action { get; set; }
 
+    [Parameter] public string State { get; set; } = ""
+
     private string _selectedOption;
 
     public void SelectOption(string option) => _selectedOption = option;
