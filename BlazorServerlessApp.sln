@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30330.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorServerlessApp", "BlazorServerlessApp\BlazorServerlessApp.csproj", "{817E0745-7A3C-46B2-AEC9-28792E867B57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerlessWeatherApi", "ServerlessWeatherApi\ServerlessWeatherApi.csproj", "{8C4A5D59-8110-44C7-AD94-D4F206B53302}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{817E0745-7A3C-46B2-AEC9-28792E867B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{817E0745-7A3C-46B2-AEC9-28792E867B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{817E0745-7A3C-46B2-AEC9-28792E867B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{817E0745-7A3C-46B2-AEC9-28792E867B57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C4A5D59-8110-44C7-AD94-D4F206B53302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C4A5D59-8110-44C7-AD94-D4F206B53302}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C4A5D59-8110-44C7-AD94-D4F206B53302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C4A5D59-8110-44C7-AD94-D4F206B53302}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22231918-3E89-42E8-A845-796A9BCDBC27}
+	EndGlobalSection
+EndGlobal
