@@ -60,7 +60,7 @@ namespace StaticWebAppsAuthenticationExtensions
             }
             catch
             {
-                return new AuthenticationState(new ClaimsPrincipal());
+                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
         }
 
@@ -79,11 +79,9 @@ namespace StaticWebAppsAuthenticationExtensions
 
         public async Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignInAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
         {
-            Console.WriteLine("Completing sign in");
             var stateId = new Uri(context.Url).PathAndQuery.Split("?")[0].Split("/", StringSplitOptions.RemoveEmptyEntries).Last();
             var serializedState = await JSRuntime.InvokeAsync<string>("sessionStorage.getItem", $"Blazor.EasyAuth.{stateId}");
             var state = JsonSerializer.Deserialize<RemoteAuthenticationState>(serializedState);
-            Console.WriteLine(state?.ReturnUrl ?? "No state or no return url");
             return new RemoteAuthenticationResult<RemoteAuthenticationState> { State = state, Status = RemoteAuthenticationStatus.Success };
         }
 
