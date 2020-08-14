@@ -5,7 +5,13 @@ namespace AzureStaticWebApps.Blazor.Authentication
 {
     public class EasyAuthOptions
     {
-        public IList<ExternalProvider> Providers { get; set; } = new List<ExternalProvider>();
+        public IList<ExternalProvider> Providers { get; set; } = new List<ExternalProvider> {
+            new ExternalProvider("github", "GitHub"),
+            new ExternalProvider("twitter", "Twitter"),
+            new ExternalProvider("facebook", "Facebook"),
+            new ExternalProvider("google", "Google"),
+            new ExternalProvider("aad", "Azure Active Directory")
+        };
         public string AuthenticationDataUrl { get; set; } = "";
     }
 
