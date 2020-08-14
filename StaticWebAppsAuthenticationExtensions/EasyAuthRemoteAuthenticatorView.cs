@@ -30,6 +30,15 @@ namespace AzureStaticWebApps.Blazor.Authentication
                     }
                     return;
 
+                // Doing this because the SignOutManager intercepts the call otherwise and it'll fail
+                // TODO: Investigate a custom SignOutManager
+                case RemoteAuthenticationActions.LogOut:
+                    await AuthenticationService.SignOutAsync(new EasyAuthRemoteAuthenticationContext
+                    {
+                        State = AuthenticationState
+                    });
+                    return;
+
                 default:
                     await base.OnParametersSetAsync();
                     break;

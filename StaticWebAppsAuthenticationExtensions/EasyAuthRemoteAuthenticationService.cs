@@ -85,14 +85,19 @@ namespace AzureStaticWebApps.Blazor.Authentication
             return new RemoteAuthenticationResult<RemoteAuthenticationState> { State = state, Status = RemoteAuthenticationStatus.Success };
         }
 
-        public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignOutAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
+        public async Task<RemoteAuthenticationResult<RemoteAuthenticationState>> CompleteSignOutAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
         {
-            throw new NotImplementedException();
+            // TODO: Work out how to get the stateId
+            // var serializedState = await JSRuntime.InvokeAsync<string>("sessionStorage.removeItem", $"Blazor.EasyAuth.{stateId}");
+
+            return new RemoteAuthenticationResult<RemoteAuthenticationState> { Status = RemoteAuthenticationStatus.Success };
         }
 
         public Task<RemoteAuthenticationResult<RemoteAuthenticationState>> SignOutAsync(RemoteAuthenticationContext<RemoteAuthenticationState> context)
         {
-            throw new NotImplementedException();
+            Navigation.NavigateTo($"/.auth/logout?post_logout_redirect_uri=authentication/logout-callback", forceLoad: true);
+
+            return Task.FromResult(new RemoteAuthenticationResult<RemoteAuthenticationState> { Status = RemoteAuthenticationStatus.Redirect });
         }
     }
 }
