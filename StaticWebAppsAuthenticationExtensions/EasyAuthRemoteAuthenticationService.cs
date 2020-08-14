@@ -16,7 +16,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace StaticWebAppsAuthenticationExtensions
+namespace AzureStaticWebApps.Blazor.Authentication
 {
     public class EasyAuthRemoteAuthenticationService : AuthenticationStateProvider, IRemoteAuthenticationService<RemoteAuthenticationState>
     {

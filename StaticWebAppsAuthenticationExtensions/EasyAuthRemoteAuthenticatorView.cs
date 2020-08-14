@@ -5,7 +5,7 @@ using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
-namespace StaticWebAppsAuthenticationExtensions
+namespace AzureStaticWebApps.Blazor.Authentication
 {
     public class EasyAuthRemoteAuthenticatorView : RemoteAuthenticatorView
     {
