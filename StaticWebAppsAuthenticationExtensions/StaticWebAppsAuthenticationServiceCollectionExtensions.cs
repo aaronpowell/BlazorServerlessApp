@@ -6,15 +6,16 @@ namespace AzureStaticWebApps.Blazor.Authentication
 {
     public static class StaticWebAppsAuthenticationServiceCollectionExtensions
     {
-        // TODO: Provide generic variants 
         public static IServiceCollection AddStaticWebAppsAuthentication(this IServiceCollection services)
         {
-            services.AddRemoteAuthentication<RemoteAuthenticationState, RemoteUserAccount, EasyAuthOptions>(options =>
-            {
-                options.ProviderOptions.Providers.Add(new ExternalProvider("github", "GitHub"));
-                options.ProviderOptions.Providers.Add(new ExternalProvider("twitter", "Twitter"));
-                options.ProviderOptions.Providers.Add(new ExternalProvider("facebook", "Facebook"));
-            });
+            return services.AddStaticWebAppsAuthentication<RemoteAuthenticationState, RemoteUserAccount, EasyAuthOptions>();
+        }
+        public static IServiceCollection AddStaticWebAppsAuthentication<TRemoteAuthenticationState, TAccount, TProviderOptions>(this IServiceCollection services)
+            where TRemoteAuthenticationState : RemoteAuthenticationState
+            where TAccount : RemoteUserAccount
+            where TProviderOptions : EasyAuthOptions, new()
+        {
+            services.AddRemoteAuthentication<TRemoteAuthenticationState, TAccount, TProviderOptions>();
 
             services.AddScoped<AuthenticationStateProvider, EasyAuthRemoteAuthenticationService>();
 
